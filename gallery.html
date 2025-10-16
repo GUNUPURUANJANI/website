@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery - Google Developer Community</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      padding: 15px 40px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+      gap: 10px;
+    }
+
+    .brand img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #e8f0fe;
+      color: #1a73e8;
+    }
+
+    /* Profile Icon */
+    .profile {
+      position: relative;
+      cursor: pointer;
+    }
+
+    #userIcon {
+      background-color: #1a73e8;
+      color: white;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .profile-popup {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 10px 15px;
+      width: 180px;
+      z-index: 100;
+    }
+
+    .logout-btn {
+      width: 100%;
+      background-color: #d93025;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    /* Gallery */
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .gallery-info {
+      padding: 10px 15px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 5px;
+      font-size: 15px;
+    }
+
+    .like-btn {
+      cursor: pointer;
+      color: #888;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.3s;
+    }
+
+    .like-btn.liked {
+      color: #e91e63;
+    }
+
+    .comment-btn {
+      cursor: pointer;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Comment Section */
+    .comment-section {
+      margin-top: 10px;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+
+    .comment {
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .add-comment {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .add-comment input {
+      flex: 1;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 6px;
+      font-size: 13px;
+    }
+
+    .add-comment button {
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="brand">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="G">
+      Google Developer Community
+    </div>
+    <div class="nav-links">
+      <a href="home.html">🏠 Home</a>
+      <a href="create-event.html">➕ Create Event</a>
+      <a href="gallery.html" class="active">🖼️ Gallery</a>
+      <a href="forum.html">💬 Forum</a>
+      <div class="profile" id="userProfile">
+        <span id="userIcon">U</span>
+        <div class="profile-popup" id="profilePopup">
+          <h4 id="profileName"></h4>
+          <p id="profileEmail"></p>
+          <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="container">
+    <div class="section-title">Community Gallery</div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </section>
+
+  <script>
+    const galleryImages = [
+      { id: 1, src: "https://www.gvpcew.ac.in/ieee_student_chapter/img/2024-3.jpg", title: "Developer Meetup 2025" },
+      { id: 2, src: "https://www.gvpcew.ac.in/ieee_student_chapter/img/2023-3.jpg", title: "Hackathon Night" },
+      { id: 3, src: "https://www.gvpcew.ac.in/ieee_student_chapter/img/2023-7.jpg", title: "AI Workshop" }
+    ];
+
+    const likes = JSON.parse(localStorage.getItem("likes")) || {};
+    const comments = JSON.parse(localStorage.getItem("comments")) || {};
+    const galleryGrid = document.getElementById("galleryGrid");
+
+    function renderGallery() {
+      galleryGrid.innerHTML = "";
+      galleryImages.forEach(img => {
+        const likeCount = likes[img.id] || 0;
+        const commentList = comments[img.id] || [];
+        const item = document.createElement("div");
+        item.classList.add("gallery-item");
+        item.innerHTML = `
+          <img src="${img.src}" alt="${img.title}">
+          <div class="gallery-info">
+            <h4>${img.title}</h4>
+            <div class="actions">
+              <div class="like-btn ${likeCount > 0 ? "liked" : ""}" data-id="${img.id}">
+                ❤️ <span>${likeCount} ${likeCount === 1 ? "like" : "likes"}</span>
+              </div>
+              <div class="comment-btn" data-id="${img.id}">
+                💬 ${commentList.length}
+              </div>
+            </div>
+            <div class="comment-section" id="comments-${img.id}">
+              ${commentList.map(c => `<div class="comment">💬 ${c}</div>`).join("")}
+              <div class="add-comment">
+                <input type="text" placeholder="Add a comment..." data-id="${img.id}">
+                <button data-id="${img.id}">Post</button>
+              </div>
+            </div>
+          </div>`;
+        galleryGrid.appendChild(item);
+      });
+    }
+
+    renderGallery();
+
+    // ✅ Like functionality (with color + count increment)
+    document.addEventListener("click", e => {
+      const like = e.target.closest(".like-btn");
+      if (like) {
+        const id = like.dataset.id;
+        likes[id] = (likes[id] || 0) + 1;
+        localStorage.setItem("likes", JSON.stringify(likes));
+        renderGallery();
+      }
+    });
+
+    // Comment functionality
+    document.addEventListener("click", e => {
+      if (e.target.tagName === "BUTTON" && e.target.textContent === "Post") {
+        const id = e.target.dataset.id;
+        const input = document.querySelector(`input[data-id='${id}']`);
+        const text = input.value.trim();
+        if (!text) return;
+        comments[id] = comments[id] || [];
+        comments[id].push(text);
+        localStorage.setItem("comments", JSON.stringify(comments));
+        input.value = "";
+        renderGallery();
+      }
+    });
+
+    // User profile
+    const user = JSON.parse(localStorage.getItem("loggedUser"));
+    const userIcon = document.getElementById("userIcon");
+    const profilePopup = document.getElementById("profilePopup");
+    const profileName = document.getElementById("profileName");
+    const profileEmail = document.getElementById("profileEmail");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (!user) {
+      window.location.href = "log.html";
+    } else {
+      userIcon.textContent = user.name ? user.name.charAt(0).toUpperCase() : "U";
+      profileName.textContent = user.name;
+      profileEmail.textContent = user.email;
+    }
+
+    userIcon.addEventListener("click", () => {
+      profilePopup.style.display =
+        profilePopup.style.display === "block" ? "none" : "block";
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("loggedUser");
+      window.location.href = "log.html";
+    });
+
+    document.addEventListener("click", e => {
+      if (!document.getElementById("userProfile").contains(e.target)) {
+        profilePopup.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>

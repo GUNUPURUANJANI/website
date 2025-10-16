@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Google Developer Community Login</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body {
+      background: linear-gradient(to bottom right, #f1f5fb, #ffffff);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-container {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .logo { width: 60px; height: 60px; margin-bottom: 20px; }
+    h2 { font-weight: 600; margin-bottom: 10px; }
+    p { color: #555; font-size: 14px; margin-bottom: 20px; }
+    .google-btn {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; background-color: white; border: 1px solid #ccc;
+      color: #555; padding: 10px 15px; border-radius: 6px;
+      cursor: pointer; font-size: 14px; margin-bottom: 15px;
+      transition: background 0.3s ease;
+    }
+    .google-btn:hover { background-color: #f5f5f5; }
+    .google-btn img { width: 18px; height: 18px; }
+    .divider { margin: 20px 0; position: relative; text-align: center; }
+    .divider::before, .divider::after {
+      content: ''; position: absolute; top: 50%;
+      width: 45%; height: 1px; background-color: #ccc;
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+    .divider span {
+      background-color: white; padding: 0 10px;
+      color: #888; font-size: 13px;
+    }
+    form { display: flex; flex-direction: column; gap: 15px; }
+    input[type="email"], input[type="password"] {
+      padding: 12px; border: 1px solid #ccc; border-radius: 6px;
+      font-size: 14px;
+    }
+    input[type="email"]::placeholder, input[type="password"]::placeholder {
+      color: #bbb;
+    }
+    .sign-in-btn {
+      background-color: #4285F4; color: white; border: none;
+      padding: 12px; border-radius: 6px; font-size: 15px;
+      cursor: pointer; transition: background-color 0.3s ease;
+    }
+    .sign-in-btn:hover { background-color: #357ae8; }
+    .footer { margin-top: 15px; font-size: 13px; color: #555; }
+    .footer a { color: #1a73e8; text-decoration: none; margin-left: 4px; }
+    .footer a:hover { text-decoration: underline; }
+    .error { color: red; font-size: 13px; text-align: left; margin-top: -10px; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Google_Favicon_2025.svg" alt="Google Logo" class="logo">
+    <h2>Google Developer Community</h2>
+    <p>Sign in to access events, gallery, and discussions</p>
+
+    <button class="google-btn" onclick="alert('Google Sign-in is not implemented in demo.')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Google_Favicon_2025.svg" alt="Google Icon">
+      Sign in with Google
+    </button>
+
+    <div class="divider"><span>OR CONTINUE WITH EMAIL</span></div>
+
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="developer@example.com" required>
+      <div id="emailError" class="error"></div>
+
+      <input type="password" id="password" placeholder="Password" required>
+      <div id="passwordError" class="error"></div>
+
+      <button class="sign-in-btn" type="submit">Sign In</button>
+    </form>
+
+    <div class="footer">
+      Don't have an account? <a href="#">Create one</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const emailError = document.getElementById("emailError");
+      const passwordError = document.getElementById("passwordError");
+
+      emailError.textContent = "";
+      passwordError.textContent = "";
+
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      let isValid = true;
+
+      if (!emailPattern.test(email)) {
+        emailError.textContent = "Please enter a valid email address.";
+        isValid = false;
+      }
+
+      if (password.length < 6) {
+        passwordError.textContent = "Password must be at least 6 characters long.";
+        isValid = false;
+      }
+
+      if (isValid) {
+        const user = {
+          email: email,
+          name: email.split('@')[0],
+          homepage: `https://developers.google.com/${email.split('@')[0]}`,
+          profileColor: "#" + Math.floor(Math.random()*16777215).toString(16)
+        };
+
+        localStorage.setItem("loggedUser", JSON.stringify(user));
+        window.location.href = "home.html"; // Redirect to discussion page
+      }
+    });
+  </script>
+</body>
+</html>

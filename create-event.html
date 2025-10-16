@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Event - Google Developer Community</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .event-form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #1a73e8;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: 500;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    button:hover {
+      background: #1765d1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="event-form">
+    <h2>Create New Event</h2>
+    <form id="createEventForm">
+      <label>Event Title</label>
+      <input type="text" id="eventTitle" required>
+
+      <label>Event Description</label>
+      <textarea id="eventDesc" rows="3" required></textarea>
+
+      <label>Event Image URL</label>
+      <input type="text" id="eventImage" placeholder="https://example.com/image.jpg">
+
+      <label>Category</label>
+      <select id="eventCategory" required>
+        <option value="Music">Music</option>
+        <option value="Arts">Arts</option>
+        <option value="Sports">Sports</option>
+        <option value="Food">Food</option>
+      </select>
+
+      <button type="submit">Create Event</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('createEventForm');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById('eventTitle').value.trim();
+      const desc = document.getElementById('eventDesc').value.trim();
+      const image = document.getElementById('eventImage').value.trim() || 'https://via.placeholder.com/300x180?text=Event';
+      const category = document.getElementById('eventCategory').value;
+
+      // Get old events
+      const events = JSON.parse(localStorage.getItem('events')) || [];
+
+      // Create new event
+      const newEvent = {
+        id: Date.now(),
+        title,
+        desc,
+        image,
+        category
+      };
+
+      // Add event to storage
+      events.push(newEvent);
+      localStorage.setItem('events', JSON.stringify(events));
+
+      alert('🎉 Event created successfully!');
+      window.location.href = 'home.html';
+    });
+  </script>
+</body>
+</html>
